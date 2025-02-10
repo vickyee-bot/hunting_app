@@ -62,12 +62,34 @@ export default function LoginForm() {
     try {
       window.location.href =
         "https://rentalke-api.onrender.com/api/auth/google";
+    } catch (err) {
+      setError("Google login failed. Please try again.");
+    }
+  };
+
+  // Function to process the response after redirection
+  const processGoogleResponse = async () => {
+    try {
+      const response = await axios.get(
+        "https://rentalke-api.onrender.com/api/auth/google/callback",
+        {
+          withCredentials: true, // Ensure cookies are included
+        }
+      );
 
       if (response.data.success) {
         alert("Google Login Successful!");
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        // Redirect user
+
+        // Extract user data
+        const { googleId, token, user } = response.data;
+
+        console.log("Google ID:", googleId); // Send this to the backend
+
+        // Store data
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // Redirect to dashboard
         window.location.href = "/";
       }
     } catch (err) {
