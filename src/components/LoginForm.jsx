@@ -2,16 +2,19 @@ import { useState } from "react";
 import axios from "axios";
 import googleIcon from "../assets/devicon_google.svg";
 import facebookIcon from "../assets/logos_facebook.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
     emailOrPhone: "",
     password: "",
+    role: "MANAGER",
     rememberMe: false,
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -33,19 +36,22 @@ export default function LoginForm() {
         {
           email: formData.emailOrPhone.trim(),
           password: formData.password,
+          role: formData.role, // Ensure role is included in the request
         }
       );
 
       if (response.data.success) {
-        alert("Login Successful!");
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        // Redirect user (implement navigation logic)
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       } else {
-        setError(response.data.message);
+        setError(response.data.message || "Login failed.");
       }
     } catch (err) {
-      setError("Invalid login credentials.");
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -109,7 +115,6 @@ export default function LoginForm() {
           className="w-full p-3 border border-teal-300 rounded-md"
           onChange={handleChange}
         />
-
         {/* Password */}
         <input
           type="password"
@@ -118,7 +123,15 @@ export default function LoginForm() {
           className="w-full p-3 border border-teal-300 rounded-md"
           onChange={handleChange}
         />
-
+        {/* role */}
+        {/* <input
+          type="text"
+          name="role"
+          value="MANAGER"
+          placeholder="Enter your password..."
+          className="w-full p-3 border border-teal-300 rounded-md"
+          onChange={handleChange}
+        /> */}
         {/* Remember Me & Forgot Password */}
         <div className="flex justify-between items-center text-sm">
           <label className="flex items-center gap-2">
@@ -134,7 +147,6 @@ export default function LoginForm() {
             Forgot Password
           </a>
         </div>
-
         {/* Sign In Button */}
         <button
           type="submit"
@@ -143,7 +155,6 @@ export default function LoginForm() {
         >
           {loading ? "Signing In..." : "Sign In"}
         </button>
-
         {/* Sign In with Google */}
         <button
           type="button"
@@ -153,7 +164,6 @@ export default function LoginForm() {
           <img src={googleIcon} alt="Google" className="w-5 mr-2" />
           Sign In with Google
         </button>
-
         {/* Sign In with Facebook */}
         <button
           type="button"

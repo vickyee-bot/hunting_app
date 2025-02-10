@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ export default function ResetPassword() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +33,10 @@ export default function ResetPassword() {
 
       if (response.data.success) {
         setMessage("Password reset successful. You can now log in.");
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
       } else {
         setError(response.data.message);
       }

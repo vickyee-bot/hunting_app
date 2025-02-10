@@ -82,40 +82,19 @@ export default function SignupForm() {
 
   const handleGoogleAuth = async () => {
     try {
-      const googleUser = await window.gapi.auth2.getAuthInstance().signIn();
-      const token = googleUser.getAuthResponse().id_token; // Get Google OAuth token
-
-      const response = await googleAuth(token);
-      setMessage(response.message);
-
-      if (response.success) {
-        navigate("/dashboard"); // Redirect after login
-      }
+      window.location.href =
+        "https://rentalke-api.onrender.com/api/auth/google";
     } catch (error) {
-      setMessage("Google authentication failed.");
+      setMessage("Google authentication failed. Please try again.");
     }
   };
 
   const handleFacebookAuth = async () => {
     try {
-      window.FB.login(
-        async (response) => {
-          if (response.authResponse) {
-            const token = response.authResponse.accessToken; // Get Facebook token
-            const authResponse = await facebookAuth(token);
-            setMessage(authResponse.message);
-
-            if (authResponse.success) {
-              navigate("/dashboard");
-            }
-          } else {
-            setMessage("Facebook authentication failed.");
-          }
-        },
-        { scope: "email" }
-      );
+      window.location.href =
+        "https://rentalke-api.onrender.com/api/auth/facebook";
     } catch (error) {
-      setMessage("Facebook authentication failed.");
+      setMessage("Facebook authentication failed. Please try again.");
     }
   };
 
