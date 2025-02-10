@@ -45,7 +45,7 @@ export default function LoginForm() {
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/");
         }, 1000);
       } else {
         setError(response.data.message || "Login failed.");
@@ -68,7 +68,7 @@ export default function LoginForm() {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         // Redirect user
-        window.location.href = "/dashboard";
+        window.location.href = "/";
       }
     } catch (err) {
       setError("Google login failed. Please try again.");
