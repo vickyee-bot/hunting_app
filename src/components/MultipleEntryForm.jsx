@@ -3,7 +3,7 @@ import ImageUploader from "../components/ImageUploader";
 import UnitFeatures from "./UnitFeatures";
 
 const MultipleEntryForm = () => {
-  const [unitCount, setUnitCount] = useState(1);
+  const [unitCount, setUnitCount] = useState();
   const [units, setUnits] = useState([]);
   const [multipleUnit, setMultipleUnit] = useState({
     number: "",
