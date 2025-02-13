@@ -12,64 +12,72 @@ import {
 } from "lucide-react";
 import user from "../assets/user.svg";
 
-const Sidebar = () => {
+export default function Sidebar({ isOpen, closeSidebar }) {
   const [propertyOpen, setPropertyOpen] = useState(false);
   const [tenantsOpen, setTenantsOpen] = useState(false);
 
   return (
-    <div className="min-h-150 w-64 bg-white p-5 flex flex-col justify-between shadow-lg">
+    <div
+      className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg p-5 flex flex-col justify-between transform ${
+        isOpen ? "translate-x-0" : "-translate-x-64"
+      } transition-transform duration-300 md:relative md:translate-x-0`}
+    >
+      {/* Close Button (Only for small screens) */}
+      <button
+        onClick={closeSidebar}
+        className="md:hidden absolute top-4 right-4 text-gray-600"
+      >
+        ✖
+      </button>
+
       {/* Main Navigation */}
-      <div>
-        <div className="space-y-4">
-          {/* Dashboard */}
-          <NavItem
-            icon={<LayoutGrid className="text-[#5fd3d3]" />}
-            label="Dashboard"
-          />
+      <div className="space-y-4">
+        <NavItem
+          icon={<LayoutGrid className="text-[#5fd3d3]" />}
+          label="Dashboard"
+        />
 
-          {/* My Property Dropdown */}
-          <Dropdown
-            icon={<Home className="text-[#5fd3d3]" />}
-            label="My Property"
-            open={propertyOpen}
-            setOpen={setPropertyOpen}
-            items={[
-              <a href="/add-estate" className="block hover:bg-gray-100">
-                Add Property
-              </a>,
-              <a href="/manage-property" className="block hover:bg-gray-100">
-                Manage Property
-              </a>,
-            ]}
-          />
+        {/* My Property Dropdown */}
+        <Dropdown
+          icon={<Home className="text-[#5fd3d3]" />}
+          label="My Property"
+          open={propertyOpen}
+          setOpen={setPropertyOpen}
+          items={[
+            <a href="/add-estate" className="block hover:bg-gray-100">
+              Add Property
+            </a>,
+            <a href="/manage-property" className="block hover:bg-gray-100">
+              Manage Property
+            </a>,
+          ]}
+        />
 
-          {/* Tenants Dropdown */}
-          <Dropdown
-            icon={<Users className="text-[#5fd3d3]" />}
-            label="Tenants"
-            open={tenantsOpen}
-            setOpen={setTenantsOpen}
-            items={["Details", "Communication"]}
-          />
+        {/* Tenants Dropdown */}
+        <Dropdown
+          icon={<Users className="text-[#5fd3d3]" />}
+          label="Tenants"
+          open={tenantsOpen}
+          setOpen={setTenantsOpen}
+          items={["Details", "Communication"]}
+        />
 
-          {/* Other Links */}
-          <NavItem
-            icon={<DollarSign className="text-[#5fd3d3]" />}
-            label="Rent Tracking"
-          />
-          <NavItem
-            icon={<MessageSquare className="text-[#5fd3d3]" />}
-            label="Messaging"
-          />
-          <NavItem
-            icon={<Settings className="text-[#5fd3d3]" />}
-            label="Account"
-          />
-          <NavItem
-            icon={<HelpCircle className="text-[#5fd3d3]" />}
-            label="Help"
-          />
-        </div>
+        <NavItem
+          icon={<DollarSign className="text-[#5fd3d3]" />}
+          label="Rent Tracking"
+        />
+        <NavItem
+          icon={<MessageSquare className="text-[#5fd3d3]" />}
+          label="Messaging"
+        />
+        <NavItem
+          icon={<Settings className="text-[#5fd3d3]" />}
+          label="Account"
+        />
+        <NavItem
+          icon={<HelpCircle className="text-[#5fd3d3]" />}
+          label="Help"
+        />
       </div>
 
       {/* Bottom Section */}
@@ -83,21 +91,15 @@ const Sidebar = () => {
 
         {/* Profile */}
         <div className="flex items-center gap-2">
-          <img
-            src={user} // Replace with real image
-            alt="User"
-            className="w-8 h-8 rounded-full"
-          />
+          <img src={user} alt="User" className="w-8 h-8 rounded-full" />
           <span className="font-medium">John</span>
         </div>
       </div>
     </div>
   );
-};
+}
 
 /* ---------- Helper Components ---------- */
-
-// Simple Navigation Item
 const NavItem = ({ icon, label, textColor = "text-gray-900" }) => (
   <div
     className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-200 ${textColor}`}
@@ -107,7 +109,6 @@ const NavItem = ({ icon, label, textColor = "text-gray-900" }) => (
   </div>
 );
 
-// Dropdown Component
 const Dropdown = ({ icon, label, open, setOpen, items }) => (
   <div>
     <div
@@ -122,7 +123,6 @@ const Dropdown = ({ icon, label, open, setOpen, items }) => (
         className={`transition-transform ${open ? "rotate-180" : ""}`}
       />
     </div>
-
     {open && (
       <div className="ml-10 space-y-1 text-gray-700">
         {items.map((item, index) => (
@@ -134,5 +134,3 @@ const Dropdown = ({ icon, label, open, setOpen, items }) => (
     )}
   </div>
 );
-
-export default Sidebar;

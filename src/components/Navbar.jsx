@@ -1,22 +1,29 @@
 import { useState } from "react";
-import { Search, MessageCircle, Bell, User } from "lucide-react";
+import { Search, Menu, MessageCircle, Bell, User } from "lucide-react";
 import logo from "../assets/logo1-removebg-preview.png";
 
-export default function Navbar() {
+export default function Navbar({ toggleSidebar }) {
   const [search, setSearch] = useState("");
 
   return (
     <nav className="flex items-center justify-between bg-white shadow-md p-4 md:px-8 w-full">
-      {/* Left Section: Logo & Greeting */}
-      <div className="flex items-center space-x-6">
-        <img
-          src={logo} // Replace with your actual logo path
-          alt="Rentalke Logo"
-          className="w-14 h-14"
-        />
+      {/* Left Section: Sidebar Toggle, Logo & Greeting */}
+      <div className="flex items-center space-x-3">
+        {/* Sidebar Toggle Button (Only visible on small screens) */}
+        <button
+          onClick={toggleSidebar}
+          className="block md:hidden p-2 rounded-md focus:outline-none"
+        >
+          <Menu className="w-6 h-6 text-gray-700" />
+        </button>
+
+        {/* Logo */}
+        <img src={logo} alt="Rentalke Logo" className="w-10 h-10" />
+
+        {/* Greeting */}
         <div>
-          <h1 className="text-lg font-semibold ml-5">Hello John!</h1>
-          <p className="text-sm text-gray-600 ml-5">
+          <h1 className="text-lg font-semibold">Hello John!</h1>
+          <p className="text-sm text-gray-600">
             Explore information and activity about your property
           </p>
         </div>
@@ -36,8 +43,8 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Right Section: Icons */}
-      <div className="flex items-center space-x-4">
+      {/* Right Section: Icons (Hidden on small screens) */}
+      <div className="hidden md:flex items-center space-x-4">
         <MessageCircle className="w-6 h-6 text-[#5fd3d3] cursor-pointer" />
         <Bell className="w-6 h-6 text-[#5fd3d3] cursor-pointer" />
         <User className="w-6 h-6 text-[#5fd3d3] cursor-pointer" />

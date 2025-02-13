@@ -5,7 +5,7 @@ import ImageUploader from "../components/ImageUploader";
 
 const AddEstate = () => {
   return (
-    <div className="w-full bg-white shadow-md p-6 rounded-md">
+    <div className="w-full bg-white shadow-md p-6 rounded-md mb-8">
       <div>
         <a href="/add-estate">
           <button className="bg-teal-300 text-white p-0.5 px-2 text-center rounded-md mr-2 hover:bg-teal-600">
