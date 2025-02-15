@@ -46,7 +46,10 @@ const UnitFeatures = () => {
   }, []);
 
   return (
-    <div className="relative w-[30%] mt-2 max-w-md" ref={dropdownRef}>
+    <div
+      className="relative w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm mt-2 max-w-md"
+      ref={dropdownRef}
+    >
       {/* Input Field */}
       <div
         className="w-full p-2 border rounded-md cursor-pointer bg-white"

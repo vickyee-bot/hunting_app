@@ -32,18 +32,19 @@ const MultipleEntryForm = () => {
       <div className="space-y-3">
         <input
           type="number"
-          className="w-[30%] sm:w-full p-2 border rounded"
+          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded "
           placeholder="Enter the number of units..."
           value={unitCount}
           onChange={(e) => setUnitCount(e.target.value)}
         />
+
         <br />
         <select
           value={multipleUnit.type}
           onChange={(e) =>
             setMultipleUnit({ ...multipleUnit, type: e.target.value })
           }
-          className="w-[30%] p-2 border rounded-md mt-2 bg-white text-gray-500"
+          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
         >
           <option value="" disabled>
             Select Unit's Type
@@ -66,7 +67,7 @@ const MultipleEntryForm = () => {
           onChange={(e) =>
             setMultipleUnit({ ...multipleUnit, size: e.target.value })
           }
-          className="w-[30%] p-2 border rounded-md mt-2 bg-white text-gray-500"
+          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
         >
           <option value="" disabled>
             Select Unit Size
@@ -88,7 +89,7 @@ const MultipleEntryForm = () => {
           onChange={(e) =>
             setMultipleUnit({ ...multipleUnit, rent: e.target.value })
           }
-          className="w-[30%] p-2 border rounded-md mt-2"
+          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2"
         />
         <br />
 
@@ -97,7 +98,7 @@ const MultipleEntryForm = () => {
           onChange={(e) =>
             setMultipleUnit({ ...multipleUnit, status: e.target.value })
           }
-          className="w-[30%] p-2 border rounded-md mt-2 text-gray-500"
+          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 text-gray-500"
         >
           <option value="" disabled>
             Select Availability Status

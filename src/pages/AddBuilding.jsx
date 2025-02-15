@@ -62,7 +62,7 @@ const AddBuilding = () => {
           <input
             type="text"
             placeholder="Enter building name..."
-            className="w-[30%] p-0.5 border rounded-md mr-2 pl-2"
+            className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border rounded-md mr-2 pl-2"
           />
         </div>
 
@@ -72,7 +72,7 @@ const AddBuilding = () => {
           <input
             type="number"
             placeholder="Enter number..."
-            className="w-[20%] p-0.5 border rounded-md pl-2"
+            className="w-[70%] sm:w-[50%] md:w-[50%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border rounded-md pl-2"
           />
         </div>
 
@@ -96,7 +96,7 @@ const AddBuilding = () => {
               value={customFeature}
               onChange={(e) => setCustomFeature(e.target.value)}
               placeholder="Add custom feature"
-              className="flex p-1 px-3 border w-[20%] rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
+              className="flex p-1 px-3 border w-[70%] sm:w-[50%] md:w-[50%] lg:w-[30%] xl:w-[30%] text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
             />
             <button
               onClick={handleAddFeature}

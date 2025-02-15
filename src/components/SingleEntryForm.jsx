@@ -26,14 +26,14 @@ const SingleEntryForm = () => {
         onChange={(e) =>
           setSingleUnit({ ...singleUnit, number: e.target.value })
         }
-        className="w-[30%] p-2 border rounded-md mt-2"
+        className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2"
       />
       <br />
 
       <select
         value={singleUnit.type}
         onChange={(e) => setSingleUnit({ ...singleUnit, type: e.target.value })}
-        className="w-[30%] p-2 border rounded-md mt-2 bg-white text-gray-500"
+        className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
       >
         <option value="" disabled>
           Select Unit Type
@@ -54,7 +54,7 @@ const SingleEntryForm = () => {
       <select
         value={singleUnit.size}
         onChange={(e) => setSingleUnit({ ...singleUnit, size: e.target.value })}
-        className="w-[30%] p-2 border rounded-md mt-2 bg-white text-gray-500"
+        className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
       >
         <option value="" disabled>
           Select Unit Size
@@ -75,7 +75,7 @@ const SingleEntryForm = () => {
         placeholder="Rent Price in Ksh."
         value={singleUnit.rent}
         onChange={(e) => setSingleUnit({ ...singleUnit, rent: e.target.value })}
-        className="w-[30%] p-2 border rounded-md mt-2"
+        className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2"
       />
       <br />
 
@@ -84,7 +84,7 @@ const SingleEntryForm = () => {
         onChange={(e) =>
           setSingleUnit({ ...singleUnit, status: e.target.value })
         }
-        className="w-[30%] p-2 border rounded-md mt-2 text-gray-500"
+        className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 text-gray-500"
       >
         <option value="" disabled>
           Select Availability Status

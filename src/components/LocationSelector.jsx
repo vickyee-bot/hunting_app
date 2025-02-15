@@ -8,9 +8,9 @@ const LocationSelector = () => {
         <input
           type="text"
           placeholder="Enter address or drag the pin to set location."
-          className="w-[50%] p-2 border rounded-md"
+          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md"
         />
-        <button className="bg-teal-400 text-white rounded-md p-1">
+        <button className="bg-teal-400 text-white rounded-md p-1 text-sm">
           Use My Location
         </button>
       </div>

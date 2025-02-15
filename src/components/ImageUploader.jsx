@@ -46,7 +46,7 @@ const ImageUploader = () => {
   };
 
   return (
-    <div className="border-dashed border-2 p-4 text-center rounded-md">
+    <div className="border-dashed border-2 p-4 text-center rounded-md ">
       <p className="font-semibold">Upload Images</p>
       <p className="text-sm text-gray-500">PNG, JPG, JPEG files are allowed</p>
 
