@@ -50,10 +50,10 @@ const LocationSelector = () => {
         ))}
       </select>
 
-      {/* Location
+      {/* Location */}
       <select className="p-2 border rounded-md w-full" disabled>
         <option value="">Select Location (Not Implemented)</option>
-      </select> */}
+      </select>
     </div>
   );
 };
