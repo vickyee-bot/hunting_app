@@ -6,7 +6,7 @@ const AddUnits = () => {
   const [entryMode, setEntryMode] = useState("multiple"); // "multiple" or "single"
 
   return (
-    <div className="w-full p-6 bg-gray-100 rounded-lg shadow-lg mb-8 sm:w-full sm:p-0">
+    <div className="w-[100%] p-1 bg-gray-100 rounded-lg shadow-lg mb-10 sm:w-full sm:p-0">
       {/* Navigation Tabs */}
       <div>
         <a href="/add-estate">

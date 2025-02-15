@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import Counties from "./Counties.jsx";
 
 const LocationSelector = () => {
   const [location, setLocation] = useState({ lat: -1.286389, lng: 36.817223 }); // Default: Nairobi
@@ -79,39 +80,7 @@ const LocationSelector = () => {
 
       {/* Dropdowns */}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-2 mt-2">
-        {/* County */}
-        <select
-          className="p-2 border rounded-md w-full"
-          value={selectedCounty}
-          onChange={(e) => {
-            setSelectedCounty(e.target.value);
-            setSubCounties(["Example Sub-County 1", "Example Sub-County 2"]);
-          }}
-        >
-          <option value="">Select County</option>
-          {counties.map((county, index) => (
-            <option key={index} value={county}>
-              {county}
-            </option>
-          ))}
-        </select>
-
-        {/* Sub-County */}
-        <select
-          className="p-2 border rounded-md w-full"
-          value={selectedSubCounty}
-          onChange={(e) => {
-            setSelectedSubCounty(e.target.value);
-            setLocations(["Example Location 1", "Example Location 2"]);
-          }}
-        >
-          <option value="">Select Sub-County</option>
-          {subCounties.map((subCounty, index) => (
-            <option key={index} value={subCounty}>
-              {subCounty}
-            </option>
-          ))}
-        </select>
+        <Counties />
 
         {/* Location */}
         <select className="p-2 border rounded-md w-full">

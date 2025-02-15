@@ -2,7 +2,7 @@ import { LayoutGrid, MessageCircle, Bell, User } from "lucide-react";
 
 const BottomNav = () => {
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white shadow-md flex justify-around items-center py-3 md:hidden mt-5">
+    <div className="fixed bottom-0 left-0 w-full bg-white shadow-md flex justify-around items-center py-3 md:hidden">
       <NavItem
         icon={<LayoutGrid className="w-6 h-6 text-[#5fd3d3]" />}
         label="Dashboard"

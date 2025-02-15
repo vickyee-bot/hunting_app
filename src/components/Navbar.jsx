@@ -12,20 +12,20 @@ export default function Navbar({ toggleSidebar }) {
         {/* Sidebar Toggle Button (Only visible on small screens) */}
         <button
           onClick={toggleSidebar}
-          className="block sm:hidden p-2 rounded-md focus:outline-none"
+          className="block sm:hidden p-0.5 rounded-md focus:outline-none"
         >
           <Menu className="w-6 h-6 text-gray-700" />
         </button>
 
         {/* Logo */}
-        <img src={logo} alt="Rentalke Logo" className="w-10 h-10" />
+        <img src={logo} alt="Rentalke Logo" className="w-15 h-15" />
 
         {/* Greeting (Left-Aligned) */}
-        <div className="w-full text-left">
+        <div className="w-full text-left ml-1 sm:ml-5">
           <h1 className="text-base sm:text-lg md:text-xl font-semibold">
             Hello John!
           </h1>
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 max-w-xs">
+          <p className="text-left w-full sm:text-sm md:text-base text-gray-600 max-w-xs sm:whitespace-normal lg:whitespace-nowrap">
             Explore your property's details & activity
           </p>
         </div>

@@ -17,7 +17,7 @@ const SingleEntryForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+    <div className="bg-white p-6 rounded-lg shadow-md mt-6 mb-8">
       <h3 className="text-lg font-semibold">Add Individual Unit</h3>
       <input
         type="text"

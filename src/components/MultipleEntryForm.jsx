@@ -25,7 +25,7 @@ const MultipleEntryForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md sm:w-full">
+    <div className="bg-white mb-8 p-6 rounded-lg shadow-md w-[100%] sm:w-[100%] md:w-[100%] lg:w-[100%] xl:w-[100%]">
       <p className="text-sm text-gray-600 mb-2">
         (Recommended for large buildings with similar units)
       </p>
@@ -117,7 +117,7 @@ const MultipleEntryForm = () => {
           <UnitFeatures />
         </div>
 
-        <div className="w-[50%]">
+        <div className="mt-2">
           <ImageUploader />
         </div>
       </div>
