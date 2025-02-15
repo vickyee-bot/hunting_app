@@ -18,7 +18,7 @@ const AddBuilding = () => {
   };
 
   return (
-    <div className="w-full bg-gray-100 p-6 rounded-lg shadow-lg">
+    <div className="w-full bg-gray-100 p-6 rounded-lg shadow-lg mb-8">
       {/* Tabs
       <div className="flex space-x-2 mb-4">
         {["Estate", "Buildings", "Units"].map((tab) => (
@@ -108,26 +108,26 @@ const AddBuilding = () => {
         </div>
 
         {/* Image Upload */}
-        <div className="mt-4 w-[50%]">
+        <div className="mt-4 w-[80%]">
           <ImageUploader />
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-between mt-6">
+        <div className="flex flex-wrap justify-between mt-6">
           <a href="/add-estate">
-            <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+            <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600 m-2">
               Back
             </button>
           </a>
 
-          <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+          <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600 m-2">
             Save & Exit
           </button>
-          <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+          <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600 m-2">
             Save & Add Another Building
           </button>
           <a href="/add-units">
-            <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600">
+            <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600 m-2">
               Save & Proceed
             </button>
           </a>

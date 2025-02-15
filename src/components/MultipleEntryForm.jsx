@@ -25,14 +25,14 @@ const MultipleEntryForm = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-white p-6 rounded-lg shadow-md sm:w-full">
       <p className="text-sm text-gray-600 mb-2">
         (Recommended for large buildings with similar units)
       </p>
       <div className="space-y-3">
         <input
           type="number"
-          className="w-[30%] p-2 border rounded"
+          className="w-[30%] sm:w-full p-2 border rounded"
           placeholder="Enter the number of units..."
           value={unitCount}
           onChange={(e) => setUnitCount(e.target.value)}
