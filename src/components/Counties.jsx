@@ -1,5 +1,5 @@
 import { useState } from "react";
-import countiesData from "../../kenya-counties-subcounties/counties.json"; // Update with correct path
+import countiesData from "../data/counties.json"; // Update with correct path
 
 const LocationSelector = () => {
   const [selectedCounty, setSelectedCounty] = useState("");
