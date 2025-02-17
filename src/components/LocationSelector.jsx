@@ -74,7 +74,7 @@ const LocationSelector = () => {
       </div>
 
       {/* Map Section */}
-      <div className="mt-2 bg-gray-300 h-52 w-full rounded-md">
+      <div className="mt-2 bg-gray-300 h-70 w-full rounded-md">
         <div id="map" className="h-full w-full"></div>
       </div>
 

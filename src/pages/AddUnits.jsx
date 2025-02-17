@@ -27,6 +27,24 @@ const AddUnits = () => {
       </div>
       <h2 className="text-2xl font-bold mb-4">Add Units</h2>
 
+      {/* Choose Estate */}
+      <div className="mb-2">
+        <label className="block font-medium">Choose Estate:</label>
+        <select className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border-1 rounded-md mr-2 pl-2 text-gray-500 ">
+          <option value="">Select estate...</option>
+          {/* Dynamically add options here */}
+        </select>
+      </div>
+
+      {/* Choose building */}
+      <div className="mb-4">
+        <label className="block font-medium">Choose Estate:</label>
+        <select className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border-1 rounded-md mr-2 pl-2 text-gray-500 ">
+          <option value="">Select building...</option>
+          {/* Dynamically add options here */}
+        </select>
+      </div>
+
       {/* Mode Selection */}
       <div className="flex space-x-4 mb-6">
         <button

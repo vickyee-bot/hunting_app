@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import LocationSelector from "../components/LocationSelector";
 import EstateFeatures from "../components/EstateFeatures";
 import ImageUploader from "../components/ImageUploader";
 
-const AddEstate = () => {
+const AddEstate = ({ onEstateAdded }) => {
+  const [estates, setEstates] = useState([]);
+  const [estateName, setEstateName] = useState("");
+  const [numBuildings, setNumBuildings] = useState("");
+
+  const addEstate = () => {
+    if (estateName.trim() !== "") {
+      const newEstate = {
+        id: estates.length + 1,
+        name: estateName,
+        buildings: numBuildings,
+      };
+      const updatedEstates = [...estates, newEstate];
+      setEstates(updatedEstates);
+      setEstateName("");
+      setNumBuildings("");
+      onEstateAdded(updatedEstates);
+    }
+  };
+
   return (
     <div className="w-full bg-white shadow-md p-6 rounded-md mb-8">
       <div>
@@ -34,6 +53,8 @@ const AddEstate = () => {
           <label className="font-semibold mr-2">Estate Name:</label>
           <input
             type="text"
+            value={estateName}
+            onChange={(e) => setEstateName(e.target.value)}
             placeholder="Enter estate name..."
             className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border rounded-md mr-2 pl-2"
           />
@@ -42,6 +63,8 @@ const AddEstate = () => {
           <label className="font-semibold mr-2">No. of buildings:</label>
           <input
             type="number"
+            value={numBuildings}
+            onChange={(e) => setNumBuildings(e.target.value)}
             placeholder="Enter number..."
             className="w-[70%] sm:w-[50%] md:w-[50%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border rounded-md pl-2"
           />
@@ -73,7 +96,10 @@ const AddEstate = () => {
 
       {/* Buttons */}
       <div className="flex justify-between mt-6">
-        <button className="bg-gray-300 px-4 py-2 rounded-md">
+        <button
+          className="bg-gray-300 px-4 py-2 rounded-md"
+          onClick={addEstate}
+        >
           Save & Exit
         </button>
         <a href="/add-building">
@@ -82,6 +108,18 @@ const AddEstate = () => {
           </button>
         </a>
       </div>
+
+      {/* Display added estates
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold">Estates List</h3>
+        <ul>
+          {estates.map((estate) => (
+            <li key={estate.id} className="border p-2 rounded-md mt-2">
+              {estate.name} - {estate.buildings} Buildings
+            </li>
+          ))}
+        </ul>
+      </div> */}
     </div>
   );
 };

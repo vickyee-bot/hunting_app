@@ -56,6 +56,15 @@ const AddBuilding = () => {
 
       {/* Form Fields */}
       <div className="mt-4 space-y-4">
+        {/* Choose Estate */}
+        <div>
+          <label className="block font-medium">Choose Estate:</label>
+          <select className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border-1 rounded-md mr-2 pl-2 text-gray-500 ">
+            <option value="">Select estate...</option>
+            {/* Dynamically add options here */}
+          </select>
+        </div>
+
         {/* Building Name */}
         <div>
           <label className="block font-medium">Building Name:</label>
