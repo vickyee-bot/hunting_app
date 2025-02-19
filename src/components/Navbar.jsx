@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Search, Menu, MessageCircle, Bell, User } from "lucide-react";
-import logo from "../assets/logo1-removebg-preview.png";
+import logo from "../assets/46-removebg-preview 1.svg";
 
 export default function Navbar({ toggleSidebar }) {
   const [search, setSearch] = useState("");
@@ -18,7 +18,7 @@ export default function Navbar({ toggleSidebar }) {
         </button>
 
         {/* Logo */}
-        <img src={logo} alt="Rentalke Logo" className="w-15 h-15" />
+        <img src={logo} alt="Rentalke Logo" className="w-16 h-16" />
 
         {/* Greeting (Left-Aligned) */}
         <div className="w-full text-left ml-1 sm:ml-5">

@@ -9,6 +9,7 @@ import {
   HelpCircle,
   LogOut,
   ChevronDown,
+  Plus,
 } from "lucide-react";
 import user from "../assets/user.svg";
 
