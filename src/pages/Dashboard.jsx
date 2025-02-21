@@ -1,15 +1,17 @@
-import React from "react";
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom"; // ✅ Import Routes & Route
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import AddEstate from "./AddEstate";
 import AddBuilding from "./AddBuilding";
 import AddUnits from "./AddUnits";
 import BottomNav from "../components/BottomNav";
+import Overview from "../components/Overview";
+import Performance from "../components/Performance";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div>
       <Navbar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
@@ -21,8 +23,17 @@ const Dashboard = () => {
 
         <div className="p-4 w-full">
           <Routes>
+            {/* Default dashboard page */}
+            <Route
+              path="/"
+              element={
+                <>
+                  <Overview />
+                  <Performance />
+                </>
+              }
+            />
             <Route path="/add-estate" element={<AddEstate />} />
-
             <Route path="/add-building" element={<AddBuilding />} />
             <Route path="/add-units" element={<AddUnits />} />
           </Routes>
