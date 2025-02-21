@@ -2,13 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import googleIcon from "../assets/devicon_google.svg";
 import facebookIcon from "../assets/logos_facebook.svg";
-import {
-  signup,
-  verifyOtp,
-  requestNewOtp,
-  googleAuth,
-  facebookAuth,
-} from "../utilities/api";
+import { googleAuth, facebookAuth } from "../utilities/api";
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -37,24 +31,48 @@ export default function SignupForm() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
       setMessage("Passwords do not match");
       return;
     }
-    setLoading(true);
-    const response = await signup({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      password: formData.password,
-      phoneNumber: formData.phone,
-      role: "MANAGER",
-    });
 
-    setMessage(response.message);
-    if (response.success) {
-      setStep(2); // Move to OTP verification
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        "https://rentalke-server-2.onrender.com/api/v1/manager/signup",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstName: formData.firstName.trim(),
+            lastName: formData.lastName.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
+            password: formData.password.trim(),
+          }),
+        }
+      );
+
+      const data = await response.json();
+      console.log("Signup Response:", data); // Debugging
+
+      if (data.errors) {
+        console.log("Validation Errors:", data.errors);
+        setMessage("Validation failed: " + JSON.stringify(data.errors));
+        return;
+      }
+
+      setMessage(data.message);
+
+      if (data.success) {
+        setStep(2); // Move to OTP verification
+      }
+    } catch (error) {
+      setMessage("An error occurred. Please try again.");
     }
+
     setLoading(false);
   };
 
@@ -62,28 +80,52 @@ export default function SignupForm() {
     e.preventDefault();
     setLoading(true);
 
-    const response = await verifyOtp(formData.email, otp);
-    setMessage(response.message);
+    try {
+      const response = await fetch(
+        "https://rentalke-server-2.onrender.com/api/v1/manager/verify-otp",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email, otp }),
+        }
+      );
+      const data = await response.json();
+      setMessage(data.message);
 
-    if (response.success) {
-      alert("Account verified! You can now log in.");
-      navigate("/login"); // ✅ Redirects to the login page
+      if (data.success) {
+        alert("Account verified! You can now log in.");
+        navigate("/login"); // ✅ Redirects to the login page
+      }
+    } catch (error) {
+      setMessage("Verification failed. Please try again.");
     }
-
     setLoading(false);
   };
 
   const handleRequestNewOtp = async () => {
     setLoading(true);
-    const response = await requestNewOtp(formData.email);
-    setMessage(response.message);
+
+    try {
+      const response = await fetch(
+        "https://rentalke-server-2.onrender.com/api/v1/manager/resend-otp",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email }),
+        }
+      );
+      const data = await response.json();
+      setMessage(data.message);
+    } catch (error) {
+      setMessage("Failed to resend OTP. Please try again.");
+    }
     setLoading(false);
   };
 
   const handleGoogleAuth = async () => {
     try {
       window.location.href =
-        "https://rentalke-api.onrender.com/api/auth/google";
+        "https://rentalke-server-2.onrender.com/api/auth/google";
     } catch (error) {
       setMessage("Google authentication failed. Please try again.");
     }
@@ -92,7 +134,7 @@ export default function SignupForm() {
   const handleFacebookAuth = async () => {
     try {
       window.location.href =
-        "https://rentalke-api.onrender.com/api/auth/facebook";
+        "https://rentalke-server-2.onrender.com/api/auth/facebook";
     } catch (error) {
       setMessage("Facebook authentication failed. Please try again.");
     }

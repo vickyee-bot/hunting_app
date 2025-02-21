@@ -4,11 +4,13 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword"; // For authentication (2FA, OTP, etc.)
 import ResetPassword from "./pages/ResetPassword";
+import LandingPage from "../client/pages/LandingPage";
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="landingpage" element={<LandingPage />} />
         <Route path="/*" element={<Dashboard />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

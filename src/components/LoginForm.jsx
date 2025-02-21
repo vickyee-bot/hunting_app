@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
-    emailOrPhone: "",
+    email: "",
     password: "",
     role: "MANAGER",
     rememberMe: false,
@@ -24,7 +24,6 @@ export default function LoginForm() {
     });
   };
 
-  // Handle form submission for email/password login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -32,87 +31,50 @@ export default function LoginForm() {
 
     try {
       const response = await axios.post(
-        "https://rentalke-api.onrender.com/api/auth/login",
+        "https://rentalke-server-2.onrender.com/api/v1/manager/login",
         {
-          email: formData.emailOrPhone.trim(),
+          email: formData.email.trim(),
           password: formData.password,
-          role: formData.role, // Ensure role is included in the request
         }
       );
 
       if (response.data.success) {
+        // Store token and user details
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
+        // Redirect to the dashboard after login
         setTimeout(() => {
-          navigate("/");
+          navigate("/dashboard");
         }, 1000);
       } else {
         setError(response.data.message || "Login failed.");
       }
     } catch (err) {
-      console.log(err);
+      setError(
+        err.response?.data?.message || "An error occurred. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle Google Authentication
   const handleGoogleAuth = async () => {
     try {
+      // Example: Redirect to your backend for Google OAuth
       window.location.href =
-        "https://rentalke-api.onrender.com/api/auth/google";
-    } catch (err) {
+        "https://rentalke-api.onrender.com/api/v1/auth/google";
+    } catch (error) {
       setError("Google login failed. Please try again.");
     }
   };
 
-  // Function to process the response after redirection
-  const processGoogleResponse = async () => {
-    try {
-      const response = await axios.get(
-        "https://rentalke-api.onrender.com/api/auth/google/callback",
-        {
-          withCredentials: true, // Ensure cookies are included
-        }
-      );
-
-      if (response.data.success) {
-        alert("Google Login Successful!");
-
-        // Extract user data
-        const { googleId, token, user } = response.data;
-
-        console.log("Google ID:", googleId); // Send this to the backend
-
-        // Store data
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-
-        // Redirect to dashboard
-        window.location.href = "/";
-      }
-    } catch (err) {
-      setError("Google login failed. Please try again.");
-    }
-  };
-
-  // Handle Facebook Authentication
   const handleFacebookAuth = async () => {
     try {
-      const response = await axios.post(
-        (window.location.href =
-          "https://rentalke-api.onrender.com/api/auth/facebook")
-      );
-
-      if (response.data.success) {
-        alert("Facebook Login Successful!");
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        // Redirect user
-      }
-    } catch (err) {
-      console.error("Facebook Login Error:", err.response?.data || err.message);
+      // Example: Redirect to your backend for Facebook OAuth
+      window.location.href =
+        "https://rentalke-api.onrender.com/api/v1/auth/facebook";
+    } catch (error) {
       setError("Facebook login failed. Please try again.");
     }
   };
@@ -132,11 +94,12 @@ export default function LoginForm() {
         {/* Email / Phone */}
         <input
           type="text"
-          name="emailOrPhone"
-          placeholder="Enter email or phone number..."
+          name="email"
+          placeholder="Enter email..."
           className="w-full p-3 border border-teal-300 rounded-md"
           onChange={handleChange}
         />
+
         {/* Password */}
         <input
           type="password"
