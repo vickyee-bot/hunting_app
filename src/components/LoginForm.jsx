@@ -45,7 +45,7 @@ export default function LoginForm() {
 
         // Redirect to the dashboard after login
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/");
         }, 1000);
       } else {
         setError(response.data.message || "Login failed.");

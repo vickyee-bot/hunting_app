@@ -23,9 +23,9 @@ const Dashboard = () => {
 
         <div className="p-4 w-full">
           <Routes>
-            {/* Default dashboard page */}
+            {/* Default dashboard content */}
             <Route
-              path="/"
+              index
               element={
                 <>
                   <Overview />
@@ -33,9 +33,9 @@ const Dashboard = () => {
                 </>
               }
             />
-            <Route path="/add-estate" element={<AddEstate />} />
-            <Route path="/add-building" element={<AddBuilding />} />
-            <Route path="/add-units" element={<AddUnits />} />
+            <Route path="add-estate" element={<AddEstate />} />
+            <Route path="add-building" element={<AddBuilding />} />
+            <Route path="add-units" element={<AddUnits />} />
           </Routes>
         </div>
       </div>

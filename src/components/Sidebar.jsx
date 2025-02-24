@@ -12,6 +12,7 @@ import {
   Plus,
 } from "lucide-react";
 import user from "../assets/user.svg";
+import { Link } from "react-router-dom";
 
 export default function Sidebar({ isOpen, closeSidebar }) {
   const [propertyOpen, setPropertyOpen] = useState(false);
@@ -33,10 +34,12 @@ export default function Sidebar({ isOpen, closeSidebar }) {
 
       {/* Main Navigation */}
       <div className="space-y-4">
-        <NavItem
-          icon={<LayoutGrid className="text-[#5fd3d3]" />}
-          label="Dashboard"
-        />
+        <Link to="/">
+          <NavItem
+            icon={<LayoutGrid className="text-[#5fd3d3]" />}
+            label="Dashboard"
+          />
+        </Link>
 
         {/* My Property Dropdown */}
         <Dropdown
@@ -45,12 +48,12 @@ export default function Sidebar({ isOpen, closeSidebar }) {
           open={propertyOpen}
           setOpen={setPropertyOpen}
           items={[
-            <a href="/add-estate" className="block hover:bg-gray-100">
+            <Link to="add-estate" className="block hover:bg-gray-100">
               Add Property
-            </a>,
-            <a href="/manage-property" className="block hover:bg-gray-100">
+            </Link>,
+            <Link to="manage-property" className="block hover:bg-gray-100">
               Manage Property
-            </a>,
+            </Link>,
           ]}
         />
 
