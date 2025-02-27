@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ImageUploader from "../components/ImageUploader";
 import UnitFeatures from "../components/UnitFeatures";
+import RentalUnitSelector from "./RentalUnitSelector";
 
 const SingleEntryForm = () => {
   const [singleUnit, setSingleUnit] = useState({
@@ -30,45 +31,10 @@ const SingleEntryForm = () => {
       />
       <br />
 
-      <select
-        value={singleUnit.type}
-        onChange={(e) => setSingleUnit({ ...singleUnit, type: e.target.value })}
-        className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
-      >
-        <option value="" disabled>
-          Select Unit Type
-        </option>
-        <option value="Apartment">Apartment</option>
-        <option value="Bungalow">Bungalow</option>
-        <option value="Maisonette">Maisonette</option>
-        <option value="Townhouse">Townhouse</option>
-        <option value="Studio Apartment">Studio Apartment</option>
-        <option value="Condominium">Condominium</option>
-        <option value="Hostel">Hostel</option>
-        <option value="Commercial Space">Commercial Space</option>
-        <option value="Serviced Apartment">Serviced Apartment</option>
-        <option value="Mixed-Use Development">Mixed-Use Development</option>
-      </select>
-      <br />
-
-      <select
-        value={singleUnit.size}
-        onChange={(e) => setSingleUnit({ ...singleUnit, size: e.target.value })}
-        className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
-      >
-        <option value="" disabled>
-          Select Unit Size
-        </option>
-        <option value="Single Room">Single Room</option>
-        <option value="Bedsitter">Bedsitter</option>
-        <option value="One Bedroom">One Bedroom</option>
-        <option value="Two Bedroom">Two Bedroom</option>
-        <option value="Three Bedroom">Three Bedroom</option>
-        <option value="Four Bedroom">Four Bedroom</option>
-        <option value="Five Bedroom">Five Bedroom</option>
-        <option value="5+ Bedrooms">5+ Bedrooms</option>
-      </select>
-      <br />
+      <RentalUnitSelector
+        singleUnit={singleUnit}
+        setSingleUnit={setSingleUnit}
+      />
 
       <input
         type="text"
@@ -91,11 +57,6 @@ const SingleEntryForm = () => {
         </option>
         <option value="Available">Available</option>
         <option value="Occupied">Occupied</option>
-        <option value="Under Maintenance">Under Maintenance</option>
-        <option value="Reserved">Reserved</option>
-        <option value="Pending Approval">Pending Approval</option>
-        <option value="Vacating Soon">Vacating Soon</option>
-        <option value="Not Available">Not Available</option>
       </select>
 
       <div className="text-gray-500">

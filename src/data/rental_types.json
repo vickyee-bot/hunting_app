@@ -1,0 +1,69 @@
+{
+  "rental_types": [
+    {
+      "type": "Apartment",
+      "sizes": [
+        "Single Room",
+        "Bedsitter",
+        "One Bedroom",
+        "Two Bedroom",
+        "Three Bedroom",
+        "Penthouse"
+      ]
+    },
+    {
+      "type": "Bungalow",
+      "sizes": [
+        "One Bedroom",
+        "Two Bedroom",
+        "Three Bedroom",
+        "Four Bedroom",
+        "Five Bedroom and Above"
+      ]
+    },
+    {
+      "type": "Mansion",
+      "sizes": ["Three Bedroom", "Four Bedroom", "Five Bedroom and Above"]
+    },
+    {
+      "type": "Studio",
+      "sizes": ["Studio Apartment"]
+    },
+    {
+      "type": "Hostel",
+      "sizes": ["Single Room", "Shared Room"]
+    },
+    {
+      "type": "Bedsitter",
+      "sizes": ["Standard Bedsitter"]
+    },
+    {
+      "type": "Maisonette",
+      "sizes": ["Three Bedroom", "Four Bedroom", "Five Bedroom and Above"]
+    },
+    {
+      "type": "Townhouse",
+      "sizes": ["Three Bedroom", "Four Bedroom", "Five Bedroom and Above"]
+    },
+    {
+      "type": "Cottage",
+      "sizes": ["One Bedroom", "Two Bedroom", "Three Bedroom"]
+    },
+    {
+      "type": "Serviced Apartment",
+      "sizes": ["Studio", "One Bedroom", "Two Bedroom", "Three Bedroom"]
+    },
+    {
+      "type": "Penthouse",
+      "sizes": ["One Bedroom", "Two Bedroom", "Three Bedroom", "Four Bedroom"]
+    },
+    {
+      "type": "Duplex",
+      "sizes": ["Two Bedroom", "Three Bedroom", "Four Bedroom"]
+    },
+    {
+      "type": "Shared Housing",
+      "sizes": ["Single Room", "Bedsitter", "One Bedroom"]
+    }
+  ]
+}
