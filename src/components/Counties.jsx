@@ -1,11 +1,10 @@
 import { useState } from "react";
-import countiesData from "../data/counties.json"; // Update with correct path
+import countiesData from "../data/counties.json"; // Ensure correct path
 
-const LocationSelector = () => {
+const Counties = ({ onCountySelect, onSubCountySelect }) => {
   const [selectedCounty, setSelectedCounty] = useState("");
   const [subCounties, setSubCounties] = useState([]);
   const [selectedSubCounty, setSelectedSubCounty] = useState("");
-  const [locations, setLocations] = useState([]); // Placeholder for future location data
 
   const handleCountyChange = (e) => {
     const countyName = e.target.value;
@@ -15,13 +14,25 @@ const LocationSelector = () => {
     const county = countiesData.find((c) => c.name === countyName);
 
     // Set sub-counties
-    setSubCounties(county ? county.sub_counties : []);
+    const newSubCounties = county ? county.sub_counties : [];
+    setSubCounties(newSubCounties);
     setSelectedSubCounty(""); // Reset sub-county when county changes
+
+    // Send updated data to the parent
+    onCountySelect(countyName, newSubCounties);
+  };
+
+  const handleSubCountyChange = (e) => {
+    const subCountyName = e.target.value;
+    setSelectedSubCounty(subCountyName);
+
+    // Send updated data to the parent
+    onSubCountySelect(subCountyName);
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-2 mt-2">
-      {/* County */}
+    <div className="grid grid-cols-1 gap-2 mt-2">
+      {/* County Dropdown */}
       <select
         className="p-2 border rounded-md w-full"
         value={selectedCounty}
@@ -35,11 +46,11 @@ const LocationSelector = () => {
         ))}
       </select>
 
-      {/* Sub-County */}
+      {/* Sub-County Dropdown */}
       <select
         className="p-2 border rounded-md w-full"
         value={selectedSubCounty}
-        onChange={(e) => setSelectedSubCounty(e.target.value)}
+        onChange={handleSubCountyChange}
         disabled={!subCounties.length}
       >
         <option value="">Select Sub-County</option>
@@ -49,13 +60,8 @@ const LocationSelector = () => {
           </option>
         ))}
       </select>
-
-      {/* Location */}
-      <select className="p-2 border rounded-md w-full" disabled>
-        <option value="">Select Location (Not Implemented)</option>
-      </select>
     </div>
   );
 };
 
-export default LocationSelector;
+export default Counties;

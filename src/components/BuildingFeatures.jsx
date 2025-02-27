@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const EstateFeatures = () => {
+const BuildingFeatures = () => {
   const [customFeature, setCustomFeature] = useState("");
   const [features, setFeatures] = useState([
     "Parking",
@@ -77,4 +77,4 @@ const EstateFeatures = () => {
   );
 };
 
-export default EstateFeatures;
+export default BuildingFeatures;

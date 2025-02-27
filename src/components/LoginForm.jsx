@@ -3,8 +3,10 @@ import axios from "axios";
 import googleIcon from "../assets/devicon_google.svg";
 import facebookIcon from "../assets/logos_facebook.svg";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginForm() {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -38,10 +40,10 @@ export default function LoginForm() {
         }
       );
 
+      console.log("API Response:", response.data); // Debug API response
+
       if (response.data.success) {
-        // Store token and user details
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        login(response.data.token, response.data.user); // ✅ Fix: Swap order
 
         // Redirect to the dashboard after login
         setTimeout(() => {

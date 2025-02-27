@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Search, Menu, MessageCircle, Bell, User } from "lucide-react";
 import logo from "../assets/46-removebg-preview 1.svg";
+import Greeting from "./Greeting";
 
 export default function Navbar({ toggleSidebar }) {
   const [search, setSearch] = useState("");
@@ -22,9 +23,7 @@ export default function Navbar({ toggleSidebar }) {
 
         {/* Greeting (Left-Aligned) */}
         <div className="w-full text-left ml-1 sm:ml-5">
-          <h1 className="text-base sm:text-lg md:text-xl font-semibold">
-            Hello John!
-          </h1>
+          <Greeting />
           <p className="text-left w-full sm:text-sm md:text-base text-gray-600 max-w-xs sm:whitespace-normal lg:whitespace-nowrap">
             Explore your property's details & activity
           </p>

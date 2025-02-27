@@ -4,12 +4,20 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/*" element={<Dashboard />} />{" "}
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />{" "}
         {/* Dashboard is now the root */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

@@ -1,37 +1,104 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ImageUploader from "../components/ImageUploader";
+import BuildingFeatures from "../components/EstateFeatures";
 
 const AddBuilding = () => {
-  const [customFeature, setCustomFeature] = useState("");
-  const [features, setFeatures] = useState([
+  const navigate = useNavigate();
+  const [estates, setEstates] = useState([]);
+  const [selectedEstate, setSelectedEstate] = useState("");
+  const [buildingName, setBuildingName] = useState("");
+  const [numFloors, setNumFloors] = useState("");
+  const [numUnits, setNumUnits] = useState("");
+  const [buildingFeatures, setBuildingFeatures] = useState([
     "Parking",
     "Elevator",
     "Rooftop access",
     "CCTV",
   ]);
+  const [customFeatures, setCustomFeatures] = useState([]);
+  const [images, setImages] = useState([]);
+  const token = localStorage.getItem("token");
 
-  const handleAddFeature = () => {
-    if (customFeature.trim() !== "") {
-      setFeatures([...features, customFeature]);
-      setCustomFeature("");
+  console.log(token);
+
+  useEffect(() => {
+    // Fetch estates managed by the authenticated manager
+    const fetchEstates = async () => {
+      try {
+        const response = await fetch(
+          "https://rentalke-server-2.onrender.com/api/v1/properties/manager/estates",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          setEstates(data.estates);
+        } else {
+          console.error("Failed to fetch estates", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching estates:", error);
+      }
+    };
+    fetchEstates();
+  }, [token]);
+
+  const handleAddBuilding = async (action) => {
+    if (!selectedEstate || !buildingName || !numFloors || !numUnits) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    const newBuilding = {
+      estateId: selectedEstate,
+      name: buildingName,
+      noOfFloors: Number(numFloors),
+      noOfUnits: Number(numUnits),
+      buildingFeatures,
+      customFeatures,
+      images,
+    };
+
+    try {
+      const response = await fetch(
+        "https://rentalke-server-2.onrender.com/api/v1/properties/manager/building",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newBuilding),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Building created successfully!");
+        setBuildingName("");
+        setNumFloors("");
+        setNumUnits("");
+        setBuildingFeatures(["Parking", "Elevator", "Rooftop access", "CCTV"]);
+        setCustomFeatures([]);
+        setImages([]);
+
+        if (action === "proceed") navigate("/add-units");
+        if (action === "addAnother") setSelectedEstate("");
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error creating building:", error);
+      alert("Something went wrong. Please try again.");
     }
   };
 
   return (
     <div className="w-full bg-gray-100 p-6 rounded-lg shadow-lg mb-8">
-      {/* Tabs
-      <div className="flex space-x-2 mb-4">
-        {["Estate", "Buildings", "Units"].map((tab) => (
-          <button
-            key={tab}
-            className={`px-4 py-2 rounded-lg ${
-              tab === "Buildings" ? "bg-teal-300 text-white" : "bg-gray-200"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div> */}
       <div>
         <a href="/add-estate">
           <button className="bg-gray-300 text-white p-0.5 px-2 text-center rounded-md mr-2 hover:bg-gray-400">
@@ -49,19 +116,22 @@ const AddBuilding = () => {
           </button>
         </a>
       </div>
-
-      <h2 className="text-xl font-bold">
-        Add Buildings in <span className="font-semibold">[estate name]</span>
-      </h2>
-
-      {/* Form Fields */}
+      <h2 className="text-xl font-bold">Add Building</h2>
       <div className="mt-4 space-y-4">
         {/* Choose Estate */}
         <div>
           <label className="block font-medium">Choose Estate:</label>
-          <select className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border-1 rounded-md mr-2 pl-2 text-gray-500 ">
+          <select
+            value={selectedEstate}
+            onChange={(e) => setSelectedEstate(e.target.value)}
+            className="w-1/3 text-sm p-1 border rounded-md text-gray-500"
+          >
             <option value="">Select estate...</option>
-            {/* Dynamically add options here */}
+            {estates.map((estate) => (
+              <option key={estate.id} value={estate.id}>
+                {estate.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -70,8 +140,10 @@ const AddBuilding = () => {
           <label className="block font-medium">Building Name:</label>
           <input
             type="text"
+            value={buildingName}
+            onChange={(e) => setBuildingName(e.target.value)}
             placeholder="Enter building name..."
-            className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border rounded-md mr-2 pl-2"
+            className="w-1/3 text-sm p-1 border rounded-md"
           />
         </div>
 
@@ -80,66 +152,54 @@ const AddBuilding = () => {
           <label className="block font-medium">No. of floors:</label>
           <input
             type="number"
+            value={numFloors}
+            onChange={(e) => setNumFloors(e.target.value)}
             placeholder="Enter number..."
-            className="w-[70%] sm:w-[50%] md:w-[50%] lg:w-[30%] xl:w-[30%] text-sm p-0.5 border rounded-md pl-2"
+            className="w-1/3 text-sm p-1 border rounded-md"
           />
         </div>
 
-        {/* Building Features */}
+        {/* No. of Units */}
         <div>
-          <label className="block font-medium">Building Features:</label>
-          <div className="mt-2 space-y-1">
-            {features.map((feature, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <input type="checkbox" id={feature} />
-                <label htmlFor={feature} className="cursor-pointer">
-                  {feature}
-                </label>
-              </div>
-            ))}
-          </div>
-          {/* Add Custom Feature */}
-          <div className="mt-2 flex items-center space-x-2">
-            <input
-              type="text"
-              value={customFeature}
-              onChange={(e) => setCustomFeature(e.target.value)}
-              placeholder="Add custom feature"
-              className="flex p-1 px-3 border w-[70%] sm:w-[50%] md:w-[50%] lg:w-[30%] xl:w-[30%] text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
-            />
-            <button
-              onClick={handleAddFeature}
-              className="bg-teal-500 text-white p-1 rounded-lg hover:bg-teal-600"
-            >
-              Save
-            </button>
-          </div>
+          <label className="block font-medium">No. of Units:</label>
+          <input
+            type="number"
+            value={numUnits}
+            onChange={(e) => setNumUnits(e.target.value)}
+            placeholder="Enter number..."
+            className="w-1/3 text-sm p-1 border rounded-md"
+          />
         </div>
 
-        {/* Image Upload */}
-        <div className="mt-4 w-[80%]">
-          <ImageUploader />
-        </div>
+        <BuildingFeatures />
+        <ImageUploader setImages={setImages} />
 
         {/* Buttons */}
         <div className="flex flex-wrap justify-between mt-6">
-          <a href="/add-estate">
-            <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600 m-2">
-              Back
-            </button>
-          </a>
-
-          <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600 m-2">
+          <button
+            onClick={() => navigate("/add-estate")}
+            className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600"
+          >
+            Back
+          </button>
+          <button
+            onClick={() => handleAddBuilding("exit")}
+            className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600"
+          >
             Save & Exit
           </button>
-          <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600 m-2">
+          <button
+            onClick={() => handleAddBuilding("addAnother")}
+            className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600"
+          >
             Save & Add Another Building
           </button>
-          <a href="/add-units">
-            <button className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600 m-2">
-              Save & Proceed
-            </button>
-          </a>
+          <button
+            onClick={() => handleAddBuilding("/add-units")}
+            className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600"
+          >
+            Save & Proceed
+          </button>
         </div>
       </div>
     </div>

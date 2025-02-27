@@ -6,11 +6,15 @@ import AddEstate from "./AddEstate";
 import AddBuilding from "./AddBuilding";
 import AddUnits from "./AddUnits";
 import BottomNav from "../components/BottomNav";
-import Overview from "../components/Overview";
-import Performance from "../components/Performance";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Handler to process the added estate
+  const handleNewEstate = (newEstate) => {
+    console.log("New estate added:", newEstate);
+    // Update state or perform other actions here
+  };
 
   return (
     <div>
@@ -23,17 +27,10 @@ const Dashboard = () => {
 
         <div className="p-4 w-full">
           <Routes>
-            {/* Default dashboard content */}
             <Route
-              index
-              element={
-                <>
-                  <Overview />
-                  <Performance />
-                </>
-              }
+              path="add-estate"
+              element={<AddEstate onEstateAdded={handleNewEstate} />}
             />
-            <Route path="add-estate" element={<AddEstate />} />
             <Route path="add-building" element={<AddBuilding />} />
             <Route path="add-units" element={<AddUnits />} />
           </Routes>

@@ -3,12 +3,11 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import Counties from "./Counties.jsx";
 
-const LocationSelector = () => {
+const LocationSelector = ({ onLocationSelect }) => {
   const [location, setLocation] = useState({ lat: -1.286389, lng: 36.817223 }); // Default: Nairobi
   const [address, setAddress] = useState("");
   const [counties, setCounties] = useState(["Nairobi", "Mombasa", "Kisumu"]);
   const [subCounties, setSubCounties] = useState([]);
-  const [locations, setLocations] = useState([]);
   const [selectedCounty, setSelectedCounty] = useState("");
   const [selectedSubCounty, setSelectedSubCounty] = useState("");
 
@@ -28,24 +27,35 @@ const LocationSelector = () => {
 
     // Update state when marker is dragged
     marker.on("dragend", function (e) {
-      setLocation({
-        lat: e.target.getLatLng().lat,
-        lng: e.target.getLatLng().lng,
-      });
+      const newLatLng = e.target.getLatLng();
+      setLocation({ lat: newLatLng.lat, lng: newLatLng.lng });
+      onLocationSelect(
+        newLatLng.lat,
+        newLatLng.lng,
+        selectedCounty,
+        selectedSubCounty
+      );
     });
 
     return () => map.remove(); // Cleanup on unmount
-  }, []);
+  }, [selectedCounty, selectedSubCounty]);
 
   // Handle "Use My Location"
   const fetchUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLocation({
+          const newLocation = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-          });
+          };
+          setLocation(newLocation);
+          onLocationSelect(
+            newLocation.lat,
+            newLocation.lng,
+            selectedCounty,
+            selectedSubCounty
+          );
         },
         () => alert("Location access denied.")
       );
@@ -80,17 +90,27 @@ const LocationSelector = () => {
 
       {/* Dropdowns */}
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-2 mt-2">
-        <Counties />
-
-        {/* Location */}
-        <select className="p-2 border rounded-md w-full">
-          <option value="">Select Location</option>
-          {locations.map((loc, index) => (
-            <option key={index} value={loc}>
-              {loc}
-            </option>
-          ))}
-        </select>
+        <Counties
+          onCountySelect={(county, subcounties) => {
+            setSelectedCounty(county);
+            setSubCounties(subcounties);
+            onLocationSelect(
+              location.lat,
+              location.lng,
+              county,
+              selectedSubCounty
+            );
+          }}
+          onSubCountySelect={(subcounty) => {
+            setSelectedSubCounty(subcounty);
+            onLocationSelect(
+              location.lat,
+              location.lng,
+              selectedCounty,
+              subcounty
+            );
+          }}
+        />
       </div>
     </div>
   );
