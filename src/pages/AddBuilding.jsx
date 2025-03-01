@@ -195,7 +195,7 @@ const AddBuilding = () => {
             Save & Add Another Building
           </button>
           <button
-            onClick={() => handleAddBuilding("/add-units")}
+            onClick={() => handleAddBuilding("proceed")}
             className="bg-teal-300 text-white px-4 py-2 rounded-lg hover:bg-teal-600"
           >
             Save & Proceed
