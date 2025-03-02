@@ -51,7 +51,7 @@ export default function Sidebar({ isOpen, closeSidebar }) {
             <Link to="add-estate" className="block hover:bg-gray-100">
               Add Property
             </Link>,
-            <Link to="manage-property" className="block hover:bg-gray-100">
+            <Link to="manage-properties" className="block hover:bg-gray-100">
               Manage Property
             </Link>,
           ]}

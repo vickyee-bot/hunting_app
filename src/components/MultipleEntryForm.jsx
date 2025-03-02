@@ -1,172 +1,134 @@
 import { useState } from "react";
 import ImageUploader from "../components/ImageUploader";
 import UnitFeatures from "./UnitFeatures";
+import RentalUnitSelector from "./RentalUnitSelector";
 
-const MultipleEntryForm = () => {
-  const [unitCount, setUnitCount] = useState();
-  const [units, setUnits] = useState([]);
-  const [multipleUnit, setMultipleUnit] = useState({
-    number: "",
-    type: "",
-    size: "",
-    rent: "",
-    status: "",
-  });
+const MultipleEntryForm = ({ selectedEstate, selectedBuilding }) => {
+  const [unitCount, setUnitCount] = useState("");
+  const [unitType, setUnitType] = useState("");
+  const [unitSize, setUnitSize] = useState("");
+  const [unitPrice, setUnitPrice] = useState("");
+  const [availability, setAvailability] = useState("");
+  const [unitPrefix, setUnitPrefix] = useState("");
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const generateUnits = () => {
-    const newUnits = Array.from({ length: unitCount }, (_, index) => ({
-      number: `Unit ${index + 1}`,
-      type: "",
-      size: "",
-      rent: "",
-      status: "",
-    }));
-    setUnits(newUnits);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedEstate || !selectedBuilding) {
+      alert("Please select an estate and building first.");
+      return;
+    }
+
+    const unitData = {
+      estateId: selectedEstate,
+      buildingId: selectedBuilding,
+      unitType: `${unitType.type} - ${unitType.size}`, // Convert to string ✅
+      unitSize,
+      interiorFeatures: selectedFeatures,
+      unitPrice: Number(unitPrice),
+      availability,
+      unitPrefix,
+      unitCount: Number(unitCount),
+      images,
+    };
+
+    console.log("Sending Request:", unitData); // Debugging request payload
+
+    try {
+      const response = await fetch(
+        "https://rentalke-server-2.onrender.com/api/v1/properties/manager/multiple-rental-units",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure token is valid
+          },
+          body: JSON.stringify(unitData),
+        }
+      );
+
+      const responseData = await response.json(); // Read response body
+      console.log("Server Response:", responseData);
+
+      if (!response.ok) {
+        console.error("Server Error:", responseData);
+        throw new Error(responseData.message || "Failed to submit units");
+      }
+
+      alert("Units added successfully!");
+    } catch (error) {
+      console.error("Error submitting units:", error);
+      alert(error.message);
+    }
   };
 
   return (
-    <div className="bg-white mb-8 p-6 rounded-lg shadow-md w-[100%] sm:w-[100%] md:w-[100%] lg:w-[100%] xl:w-[100%]">
+    <div className="bg-white mb-8 p-6 rounded-lg shadow-md w-full">
       <p className="text-sm text-gray-600 mb-2">
         (Recommended for large buildings with similar units)
       </p>
       <div className="space-y-3">
         <input
           type="number"
-          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded "
+          className="w-1/3 text-sm p-2 border rounded"
           placeholder="Enter the number of units..."
           value={unitCount}
           onChange={(e) => setUnitCount(e.target.value)}
         />
-
         <br />
-        <select
-          value={multipleUnit.type}
-          onChange={(e) =>
-            setMultipleUnit({ ...multipleUnit, type: e.target.value })
-          }
-          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
-        >
-          <option value="" disabled>
-            Select Unit's Type
-          </option>
-          <option value="Apartment">Apartment</option>
-          <option value="Bungalow">Bungalow</option>
-          <option value="Maisonette">Maisonette</option>
-          <option value="Townhouse">Townhouse</option>
-          <option value="Studio Apartment">Studio Apartment</option>
-          <option value="Condominium">Condo</option>
-          <option value="Hostel">Hostel</option>
-          <option value="Commercial Space">Commercial Space</option>
-          <option value="Serviced Apartment">Serviced Apartment</option>
-          <option value="Mixed-Use Development">Mixed-Use Development</option>
-        </select>
-        <br />
+        <input
+          type="text"
+          placeholder="Unit Prefix (e.g., ROOM)"
+          value={unitPrefix}
+          onChange={(e) => setUnitPrefix(e.target.value)}
+          className="w-1/3 text-sm p-2 border rounded-md mt-2"
+        />
 
-        <select
-          value={multipleUnit.size}
-          onChange={(e) =>
-            setMultipleUnit({ ...multipleUnit, size: e.target.value })
-          }
-          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
-        >
-          <option value="" disabled>
-            Select Unit Size
-          </option>
-          <option value="Single Room">Single Room</option>
-          <option value="Bedsitter">Bedsitter</option>
-          <option value="One Bedroom">One Bedroom</option>
-          <option value="Two Bedroom">Two Bedroom</option>
-          <option value="Three Bedroom">Three Bedroom</option>
-          <option value="Four Bedroom">Four Bedroom</option>
-          <option value="Five Bedroom">Five Bedroom</option>
-          <option value="5+ Bedrooms">5+ Bedrooms</option>
-        </select>
+        <RentalUnitSelector unitData={unitType} setUnitData={setUnitType} />
+
+        <input
+          type="text"
+          placeholder="Unit Size (e.g., 20 sqm)"
+          value={unitSize}
+          onChange={(e) => setUnitSize(e.target.value)}
+          className="w-1/3 text-sm p-2 border rounded-md mt-2"
+        />
         <br />
         <input
           type="text"
           placeholder="Rent Price in Ksh."
-          value={multipleUnit.rent}
-          onChange={(e) =>
-            setMultipleUnit({ ...multipleUnit, rent: e.target.value })
-          }
-          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2"
+          value={unitPrice}
+          onChange={(e) => setUnitPrice(e.target.value)}
+          className="w-1/3 text-sm p-2 border rounded-md mt-2"
         />
         <br />
-
         <select
-          value={multipleUnit.status}
-          onChange={(e) =>
-            setMultipleUnit({ ...multipleUnit, status: e.target.value })
-          }
-          className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 text-gray-500"
+          value={availability}
+          onChange={(e) => setAvailability(e.target.value)}
+          className="w-1/3 text-sm p-2 border rounded-md mt-2 text-gray-500"
         >
           <option value="" disabled>
             Select Availability Status
           </option>
-          <option value="Available">Available</option>
-          <option value="Occupied">Occupied</option>
-          <option value="Under Maintenance">Under Maintenance</option>
-          <option value="Reserved">Reserved</option>
-          <option value="Pending Approval">Pending Approval</option>
-          <option value="Vacating Soon">Vacating Soon</option>
-          <option value="Not Available">Not Available</option>
+          <option value="VACANT">Available</option>
+          <option value="OCCUPIED">Occupied</option>
         </select>
 
-        <div className="text-gray-500">
-          {" "}
-          <UnitFeatures />
-        </div>
+        <UnitFeatures
+          selectedFeatures={selectedFeatures}
+          setSelectedFeatures={setSelectedFeatures}
+        />
 
-        <div className="mt-2">
-          <ImageUploader />
-        </div>
-      </div>
-      <button
-        onClick={generateUnits}
-        className="bg-teal-500 text-white px-4 py-2 rounded-lg w-full mt-4"
-      >
-        Generate Units
-      </button>
-      <a href="/add-building">
-        <button className="bg-teal-500 text-white px-4 py-2 rounded-lg mt-4 mr-2">
-          Back
-        </button>
-      </a>
+        <ImageUploader images={images} setImages={setImages} />
 
-      <button className="bg-teal-500 text-white px-4 py-2 rounded-lg mt-4">
-        Save & exit
-      </button>
-
-      {/* Render Generated Units */}
-      {units.map((unit, index) => (
-        <div key={index} className="border p-4 mt-4 rounded-lg bg-gray-50">
-          <p className="font-semibold">Unit {index + 1}</p>
-          <input
-            type="text"
-            placeholder={multipleUnit.type}
-            className="w-full p-2 border rounded-md mt-2"
-          />
-          <input
-            type="text"
-            placeholder="Unit Size"
-            className="w-full p-2 border rounded-md mt-2"
-          />
-          <input
-            type="text"
-            placeholder="Rent Price"
-            className="w-full p-2 border rounded-md mt-2"
-          />
-          <input
-            type="text"
-            placeholder="Availability Status"
-            className="w-full p-2 border rounded-md mt-2"
-          />
-        </div>
-      ))}
-      {/* Confirm & Publish */}
-      <div className="mt-6">
-        <button className="bg-green-500 text-white px-6 py-2 rounded-lg w-full">
-          Confirm & Publish
+        <button
+          onClick={handleSubmit}
+          className="bg-teal-500 text-white px-4 py-2 rounded-lg w-full mt-4"
+          disabled={loading}
+        >
+          {loading ? "Submitting..." : "Submit Units"}
         </button>
       </div>
     </div>

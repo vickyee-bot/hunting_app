@@ -6,6 +6,7 @@ import AddEstate from "./AddEstate";
 import AddBuilding from "./AddBuilding";
 import AddUnits from "./AddUnits";
 import BottomNav from "../components/BottomNav";
+import PropertyManagement from "./PropertyManagement";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,6 +34,7 @@ const Dashboard = () => {
             />
             <Route path="add-building" element={<AddBuilding />} />
             <Route path="add-units" element={<AddUnits />} />
+            <Route path="manage-properties" element={<PropertyManagement />} />
           </Routes>
         </div>
       </div>

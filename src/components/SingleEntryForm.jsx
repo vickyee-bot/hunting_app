@@ -3,23 +3,95 @@ import ImageUploader from "../components/ImageUploader";
 import UnitFeatures from "../components/UnitFeatures";
 import RentalUnitSelector from "./RentalUnitSelector";
 
-const SingleEntryForm = () => {
+const SingleEntryForm = ({ selectedEstate, selectedBuilding }) => {
   const [singleUnit, setSingleUnit] = useState({
     number: "",
     type: "",
     size: "",
     rent: "",
     status: "",
+    images: [],
+    features: [], // Holds user-selected features dynamically
   });
 
-  const addSingleUnit = () => {
-    console.log("Unit Added:", singleUnit);
-    setSingleUnit({ number: "", type: "", size: "", rent: "", status: "" });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const addSingleUnit = async () => {
+    setLoading(true);
+    setMessage("");
+
+    const requestBody = {
+      estateId: selectedEstate,
+      buildingId: selectedBuilding,
+      name: singleUnit.number,
+      unitType: singleUnit.type,
+      unitSize: singleUnit.size,
+      interiorFeatures: singleUnit.features, // Dynamic features
+      unitPrice: singleUnit.rent ? parseFloat(singleUnit.rent) : 0,
+      images: singleUnit.images,
+      availability: singleUnit.status || "VACANT",
+    };
+
+    console.log("Request Body Sent to Database:", requestBody);
+
+    try {
+      const response = await fetch(
+        "https://rentalke-server-2.onrender.com/api/v1/properties/manager/rental-unit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            estateId: selectedEstate,
+            buildingId: selectedBuilding,
+            name: singleUnit.number,
+            unitType: singleUnit.type,
+            unitSize: singleUnit.size,
+            interiorFeatures: singleUnit.features, // Dynamic features
+            unitPrice: singleUnit.rent ? parseFloat(singleUnit.rent) : 0,
+            images: singleUnit.images,
+            availability: singleUnit.status || "VACANT",
+          }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to add unit");
+
+      alert("Rental unit added successfully!");
+      setSingleUnit({
+        number: "",
+        type: "",
+        size: "",
+        rent: "",
+        status: "",
+        images: [],
+        features: [],
+      });
+    } catch (error) {
+      setMessage("Error adding unit. Please try again.");
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mt-6 mb-8">
       <h3 className="text-lg font-semibold">Add Individual Unit</h3>
+
+      {message && (
+        <p
+          className={`text-sm mt-2 ${
+            message.includes("Error") ? "text-red-500" : "text-green-500"
+          }`}
+        >
+          {message}
+        </p>
+      )}
+
       <input
         type="text"
         placeholder="Unit Number...e.g. A-101"
@@ -31,13 +103,10 @@ const SingleEntryForm = () => {
       />
       <br />
 
-      <RentalUnitSelector
-        singleUnit={singleUnit}
-        setSingleUnit={setSingleUnit}
-      />
+      <RentalUnitSelector unitData={singleUnit} setUnitData={setSingleUnit} />
 
       <input
-        type="text"
+        type="number"
         placeholder="Rent Price in Ksh."
         value={singleUnit.rent}
         onChange={(e) => setSingleUnit({ ...singleUnit, rent: e.target.value })}
@@ -55,16 +124,28 @@ const SingleEntryForm = () => {
         <option value="" disabled>
           Select Availability Status
         </option>
-        <option value="Available">Available</option>
-        <option value="Occupied">Occupied</option>
+        <option value="VACANT">Available</option>
+        <option value="OCCUPIED">Occupied</option>
       </select>
 
-      <div className="text-gray-500">
-        <UnitFeatures />
+      <div className="text-gray-500 mt-2">
+        <UnitFeatures
+          selectedFeatures={
+            Array.isArray(singleUnit.features) ? singleUnit.features : []
+          } // Ensure array
+          setSelectedFeatures={(newFeatures) =>
+            setSingleUnit((prev) => ({
+              ...prev,
+              features: Array.isArray(newFeatures) ? [...newFeatures] : [], // Ensure newFeatures is an array
+            }))
+          }
+        />
       </div>
 
       <div className="mt-2">
-        <ImageUploader />
+        <ImageUploader
+          setImages={(images) => setSingleUnit({ ...singleUnit, images })}
+        />
       </div>
 
       <a href="/add-building">
@@ -76,20 +157,14 @@ const SingleEntryForm = () => {
       <button
         onClick={addSingleUnit}
         className="bg-teal-500 text-white px-4 py-2 rounded-lg mt-4 mr-2"
+        disabled={loading}
       >
-        Save & Add More
+        {loading ? "Saving..." : "Save & Add More"}
       </button>
 
       <button className="bg-teal-500 text-white px-4 py-2 rounded-lg mt-4">
-        Save & exit
+        Save & Exit
       </button>
-
-      {/* Confirm & Publish */}
-      <div className="mt-6">
-        <button className="bg-green-500 text-white px-6 py-2 rounded-lg w-full">
-          Confirm & Publish
-        </button>
-      </div>
     </div>
   );
 };

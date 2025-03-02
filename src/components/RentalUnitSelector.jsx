@@ -1,10 +1,10 @@
 import React from "react";
 import rentalData from "../data/rental_types.json"; // Adjust path as needed
 
-const RentalUnitSelector = ({ singleUnit = {}, setSingleUnit }) => {
-  // Ensure singleUnit has a default structure
-  const selectedType = singleUnit.type || "";
-  const selectedSize = singleUnit.size || "";
+const RentalUnitSelector = ({ unitData, setUnitData }) => {
+  // Ensure unitData has a default structure
+  const selectedType = unitData?.type || "";
+  const selectedSize = unitData?.size || "";
 
   // Extract rental types
   const rentalTypes = rentalData.rental_types.map((unit) => unit.type);
@@ -20,7 +20,7 @@ const RentalUnitSelector = ({ singleUnit = {}, setSingleUnit }) => {
       <select
         value={selectedType}
         onChange={(e) =>
-          setSingleUnit({ ...singleUnit, type: e.target.value, size: "" })
+          setUnitData({ ...unitData, type: e.target.value, size: "" })
         }
         className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
       >
@@ -39,7 +39,7 @@ const RentalUnitSelector = ({ singleUnit = {}, setSingleUnit }) => {
       {/* Unit Size Dropdown */}
       <select
         value={selectedSize}
-        onChange={(e) => setSingleUnit({ ...singleUnit, size: e.target.value })}
+        onChange={(e) => setUnitData({ ...unitData, size: e.target.value })}
         className="w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm p-2 border rounded-md mt-2 bg-white text-gray-500"
         disabled={!selectedType} // Disable if no type is selected
       >

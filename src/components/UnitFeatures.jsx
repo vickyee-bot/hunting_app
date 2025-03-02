@@ -20,18 +20,24 @@ const featuresList = [
   "Balcony",
 ];
 
-const UnitFeatures = () => {
-  const [selectedFeatures, setSelectedFeatures] = useState([]);
+const UnitFeatures = ({ selectedFeatures = [], setSelectedFeatures }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  // Ensure selectedFeatures is always an array
+  const safeSelectedFeatures = Array.isArray(selectedFeatures)
+    ? selectedFeatures
+    : [];
+
   // Toggle feature selection
   const handleFeatureToggle = (feature) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(feature)
-        ? prev.filter((item) => item !== feature)
-        : [...prev, feature]
-    );
+    setSelectedFeatures((prevFeatures) => {
+      if (!Array.isArray(prevFeatures)) prevFeatures = []; // Ensure it's an array
+
+      return prevFeatures.includes(feature)
+        ? prevFeatures.filter((item) => item !== feature) // Remove feature
+        : [...prevFeatures, feature]; // Add feature
+    });
   };
 
   // Close dropdown when clicking outside
@@ -46,17 +52,14 @@ const UnitFeatures = () => {
   }, []);
 
   return (
-    <div
-      className="relative w-[80%] sm:w-[70%] md:w-[60%] lg:w-[30%] xl:w-[30%] text-sm mt-2 max-w-md"
-      ref={dropdownRef}
-    >
+    <div className="relative w-full text-sm mt-2 max-w-md" ref={dropdownRef}>
       {/* Input Field */}
       <div
         className="w-full p-2 border rounded-md cursor-pointer bg-white"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        {selectedFeatures.length > 0
-          ? selectedFeatures.join(", ")
+        {safeSelectedFeatures.length > 0
+          ? safeSelectedFeatures.join(", ")
           : "Select Interior Features"}
       </div>
 
@@ -71,7 +74,7 @@ const UnitFeatures = () => {
               <input
                 type="checkbox"
                 className="mr-2"
-                checked={selectedFeatures.includes(feature)}
+                checked={safeSelectedFeatures.includes(feature)}
                 onChange={() => handleFeatureToggle(feature)}
               />
               {feature}
