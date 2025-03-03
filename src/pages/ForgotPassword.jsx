@@ -17,7 +17,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.post(
-        "https://rentalke-api.onrender.com/api/auth/forgot-password",
+        "https://rentalke-server-2.onrender.com/api/v1/manager/forgot-password",
         { email }
       );
 

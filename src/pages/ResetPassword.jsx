@@ -27,7 +27,7 @@ export default function ResetPassword() {
 
     try {
       const response = await axios.post(
-        "https://rentalke-api.onrender.com/api/auth/reset-password",
+        "https://rentalke-server-2.onrender.com/api/v1/manager/reset-password",
         formData
       );
 

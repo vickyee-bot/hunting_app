@@ -172,7 +172,7 @@ const AddBuilding = () => {
         </div>
 
         <BuildingFeatures />
-        <ImageUploader setImages={setImages} />
+        <ImageUploader onImagesUpload={setImages} />
 
         {/* Buttons */}
         <div className="flex flex-wrap justify-between mt-6">

@@ -121,7 +121,7 @@ const MultipleEntryForm = ({ selectedEstate, selectedBuilding }) => {
           setSelectedFeatures={setSelectedFeatures}
         />
 
-        <ImageUploader images={images} setImages={setImages} />
+        <ImageUploader images={images} onImagesUpload={setImages} />
 
         <button
           onClick={handleSubmit}

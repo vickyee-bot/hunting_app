@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { X } from "lucide-react"; // Importing an icon for delete (You need `lucide-react` installed)
+import { X } from "lucide-react";
+import axios from "axios";
 
-const ImageUploader = () => {
+const ImageUploader = ({ onImagesUpload }) => {
   const [images, setImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
+  const [uploadedUrls, setUploadedUrls] = useState([]);
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const files = Array.from(event.target.files);
     const newImages = files.map((file) => ({
       file,
@@ -14,24 +16,59 @@ const ImageUploader = () => {
     }));
 
     setImages((prevImages) => [...prevImages, ...newImages]);
-    simulateUpload(newImages);
+    await uploadImages(newImages);
   };
 
-  const simulateUpload = (newImages) => {
-    newImages.forEach((image) => {
-      let progress = 0;
-      const interval = setInterval(() => {
-        if (progress >= 100) {
-          clearInterval(interval);
+  const uploadImages = async (newImages) => {
+    const uploadedImageUrls = [];
+
+    for (const image of newImages) {
+      const formData = new FormData();
+      formData.append("images", image.file);
+
+      try {
+        const response = await axios.post(
+          "https://rentalke-server-2.onrender.com/api/v1/properties/upload-images",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            onUploadProgress: (progressEvent) => {
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              setUploadProgress((prev) => ({
+                ...prev,
+                [image.preview]: percentCompleted,
+              }));
+            },
+          }
+        );
+
+        if (response.data.success && response.data.urls) {
+          console.log("Upload Response:", response.data); // Debugging
+          uploadedImageUrls.push(...response.data.urls); // Extract all URLs
         } else {
-          progress += 10;
-          setUploadProgress((prevProgress) => ({
-            ...prevProgress,
-            [image.preview]: progress,
-          }));
+          console.error("Upload failed:", response.data);
         }
-      }, 300);
+      } catch (error) {
+        console.error("Upload error:", error.message);
+      }
+    }
+
+    // Update state after all uploads are done
+    setUploadedUrls((prevUrls) => {
+      const updatedUrls = [...prevUrls, ...uploadedImageUrls];
+      console.log("Updated Uploaded URLs:", updatedUrls); // Debugging
+      return updatedUrls;
     });
+
+    // Ensure `onImagesUpload` is called correctly
+    setTimeout(() => {
+      onImagesUpload([...uploadedUrls, ...uploadedImageUrls]);
+    }, 0);
   };
 
   const handleDeleteImage = (preview) => {
@@ -46,7 +83,7 @@ const ImageUploader = () => {
   };
 
   return (
-    <div className="border-dashed border-2 p-4 text-center rounded-md ">
+    <div className="border-dashed border-2 p-4 text-center rounded-md">
       <p className="font-semibold">Upload Images</p>
       <p className="text-sm text-gray-500">PNG, JPG, JPEG files are allowed</p>
 

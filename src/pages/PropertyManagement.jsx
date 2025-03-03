@@ -187,12 +187,17 @@ const PropertyManagement = () => {
               key={estate._id || index}
               className="p-4 bg-white shadow-md rounded-md min-w-[90%] md:min-w-[48%] lg:min-w-[32%]"
             >
-              <img src={estate.images} alt="estate images" />
+              <img
+                src={estate.images[0]}
+                alt="estate images"
+                className="h-60 w-60"
+              />
               <h3 className="text-lg font-semibold">{estate.name}</h3>
               <p className="text-gray-600">Location: {estate.subcounty}</p>
               <p className="text-gray-600">
                 Total Buildings: {estate.buildings.length}
               </p>
+
               {/* <p className="text-gray-600">
                 Total Units: {estate.unitCount || "N/A"}
               </p> */}
@@ -209,7 +214,7 @@ const PropertyManagement = () => {
               key={building._id || index}
               className="p-4 bg-white shadow-md rounded-md min-w-[90%] md:min-w-[48%] lg:min-w-[32%]"
             >
-              <img src={building.images} alt="building images" />
+              <img src={building.images[0]} alt="building images" />
               <h3 className="text-lg font-semibold">{building.name}</h3>
               <p className="text-gray-600">Floors: {building.noOfFloors}</p>
               <p className="text-gray-600">Units: {building.noOfUnits}</p>
@@ -226,7 +231,7 @@ const PropertyManagement = () => {
               key={unit._id || index}
               className="p-4 bg-white shadow-md rounded-md min-w-[80%] md:min-w-[48%] lg:min-w-[30%]"
             >
-              <img src={unit.images} alt="unit images" />
+              <img src={unit.images[0]} alt="unit images" />
               <h4 className="text-md font-semibold">Unit: {unit.name}</h4>
               <p className="text-gray-600">Type: {unit.unitType}</p>
               <p className="text-gray-600">Size: {unit.unitSize}</p>

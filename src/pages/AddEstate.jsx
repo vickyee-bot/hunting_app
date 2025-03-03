@@ -54,6 +54,8 @@ const AddEstate = ({ onEstateAdded }) => {
 
       const data = await response.json();
 
+      console.log(data);
+
       if (response.ok) {
         alert("Estate created successfully!");
         onEstateAdded(data.estate);

@@ -144,7 +144,7 @@ const SingleEntryForm = ({ selectedEstate, selectedBuilding }) => {
 
       <div className="mt-2">
         <ImageUploader
-          setImages={(images) => setSingleUnit({ ...singleUnit, images })}
+          onImagesUpload={(images) => setSingleUnit({ ...singleUnit, images })}
         />
       </div>
 
